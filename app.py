@@ -44,6 +44,17 @@ def api_docs():
     """API documentation page"""
     return render_template('api_docs.html')
 
+@app.route('/download')
+def download_page():
+    """Download page for GitHub deployment package"""
+    with open('download.html', 'r') as f:
+        return f.read()
+
+@app.route('/qr-code-api-github.tar.gz')
+def download_archive():
+    """Serve the GitHub deployment archive"""
+    return send_file('qr-code-api-github.tar.gz', as_attachment=True, download_name='qr-code-api-github.tar.gz')
+
 @app.route('/api/v1/qr/url', methods=['POST'])
 def generate_url_qr():
     """Generate QR code for URL"""

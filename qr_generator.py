@@ -156,22 +156,41 @@ class QRCodeGenerator:
         qr.add_data(data)
         qr.make(fit=True)
         
-        try:
-            # Create SVG factory
-            factory = qrcode.image.svg.SvgPathImage
-            img = qr.make_image(image_factory=factory, fill_color=merged_options['foreground_color'])
-            
-            # Convert to string
-            svg_buffer = io.BytesIO()
-            img.save(svg_buffer)
-            svg_string = svg_buffer.getvalue().decode('utf-8')
-            
-            return f"data:image/svg+xml;base64,{base64.b64encode(svg_string.encode()).decode()}"
-        except Exception as e:
-            # Fallback to PNG if SVG fails
-            logging.warning(f"SVG generation failed, falling back to PNG: {str(e)}")
-            img = self._create_qr_code(data, options)
-            return self._image_to_base64(img, 'PNG')
+        # Get the QR code matrix
+        matrix = qr.get_matrix()
+        size = merged_options['size']
+        border = merged_options['border']
+        
+        # Calculate SVG dimensions
+        matrix_size = len(matrix)
+        total_size = (matrix_size + 2 * border) * size
+        
+        # Create SVG content
+        svg_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="{total_size}" height="{total_size}" viewBox="0 0 {total_size} {total_size}">
+<rect width="{total_size}" height="{total_size}" fill="{merged_options['background_color']}"/>'''
+
+        # Add QR code modules
+        for row in range(matrix_size):
+            for col in range(matrix_size):
+                if matrix[row][col]:
+                    x = (col + border) * size
+                    y = (row + border) * size
+                    
+                    if merged_options['module_drawer'] == 'circle':
+                        radius = size // 2
+                        cx = x + radius
+                        cy = y + radius
+                        svg_content += f'\n<circle cx="{cx}" cy="{cy}" r="{radius}" fill="{merged_options["foreground_color"]}"/>'
+                    elif merged_options['module_drawer'] == 'rounded':
+                        rx = ry = size // 4
+                        svg_content += f'\n<rect x="{x}" y="{y}" width="{size}" height="{size}" rx="{rx}" ry="{ry}" fill="{merged_options["foreground_color"]}"/>'
+                    else:  # square
+                        svg_content += f'\n<rect x="{x}" y="{y}" width="{size}" height="{size}" fill="{merged_options["foreground_color"]}"/>'
+        
+        svg_content += '\n</svg>'
+        
+        return f"data:image/svg+xml;base64,{base64.b64encode(svg_content.encode()).decode()}"
     
     def _generate_pdf(self, data, options):
         """Generate PDF format QR code"""

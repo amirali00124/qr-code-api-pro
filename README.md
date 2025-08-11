@@ -1,103 +1,110 @@
 # QR Code Generator API
 
-A professional QR code generation API with customization options, multiple content types, and demo interface designed for RapidAPI monetization.
+A comprehensive, professional QR Code Generator API designed for RapidAPI monetization. Generate high-quality QR codes with advanced customization options.
 
-## Features
+## 🚀 Features
 
-- **Multiple QR Code Types**: URL, Text, Email, Phone, SMS, vCard, WiFi, Location
-- **Advanced Customization**: Colors, shapes, sizes, error correction levels
-- **Multiple Output Formats**: PNG, SVG, PDF
-- **Professional Demo Interface**: Interactive web interface for testing
-- **RapidAPI Ready**: Optimized for marketplace deployment
-- **Keep-Alive Functionality**: Prevents Render free tier from sleeping
+- **8 QR Code Types**: URL, Text, Email, Phone, SMS, vCard, WiFi, Location
+- **Multiple Formats**: PNG, SVG, PDF output
+- **Advanced Customization**: Colors, shapes, error correction levels
+- **Professional Design**: Bootstrap-based demo interface
+- **RapidAPI Ready**: Pre-configured for marketplace integration
+- **Competitive Pricing**: 5-tier pricing structure starting with 500 free requests
 
-## Quick Start
+## 🎯 Pricing Strategy
 
-### Local Development
+- **Free**: 500 requests/month
+- **Starter**: $5/mo - 2,000 requests + $0.05 overage
+- **Basic**: $7/mo - 5,000 requests + $0.03 overage  
+- **Pro**: $12.99/mo - 15,000 requests + $0.02 overage
+- **Ultra**: $49/mo - 100,000 requests + $0.01 overage
 
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-2. Run the application:
-```bash
-python main.py
-```
-
-3. Open http://localhost:5000 in your browser
-
-### Deployment on Render
-
-1. Push this code to your GitHub repository
-2. Connect to Render and deploy
-3. Set environment variables:
-   - `SESSION_SECRET`: Auto-generate
-   - `RENDER`: Set to "true"
-
-See `DEPLOYMENT.md` for detailed deployment instructions.
-
-## API Endpoints
-
-### Generate QR Code for URL
-```
-POST /api/v1/qr/url
-```
-
-**Request Body:**
-```json
-{
-  "url": "https://example.com",
-  "options": {
-    "foreground_color": "#000000",
-    "background_color": "#ffffff",
-    "module_drawer": "square",
-    "error_correction": "M",
-    "format": "PNG",
-    "size": 10
-  }
-}
-```
-
-### Health Check
-```
-GET /health
-```
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 ├── app.py              # Main Flask application
-├── main.py             # Application entry point
 ├── qr_generator.py     # QR code generation logic
-├── keep_alive.py       # Keep-alive service for Render
+├── main.py             # Application entry point
 ├── templates/          # HTML templates
-├── static/             # CSS and JavaScript files
-├── render.yaml         # Render deployment config
-├── Procfile            # Process configuration
-├── runtime.txt         # Python version
-└── requirements.txt    # Python dependencies
+│   ├── index.html      # Demo interface
+│   └── api_docs.html   # API documentation
+├── static/             # CSS/JS assets
+├── Procfile           # Deployment configuration
+└── render.yaml        # Render deployment config
 ```
 
-## Pricing Strategy
+## 🛠 Deployment
 
-Competitive 5-tier pricing structure for RapidAPI:
+### GitHub + Render (Recommended)
 
-- **Free**: $0/mo - 500 requests/month
-- **Starter**: $5/mo - 2,000 requests + overage
-- **Basic**: $7/mo - 5,000 requests + overage
-- **Pro**: $12.99/mo - 15,000 requests + overage
-- **Ultra**: $49/mo - 100,000 requests + overage
+1. **Push to GitHub**:
+   ```bash
+   git add .
+   git commit -m "QR Code API ready for deployment"
+   git push origin main
+   ```
 
-## Keep-Alive Feature
+2. **Deploy on Render**:
+   - Connect your GitHub repository
+   - Render will automatically detect the `render.yaml` configuration
+   - Your API will be live at `https://your-app-name.onrender.com`
 
-This project includes an automatic keep-alive service that:
+3. **List on RapidAPI**:
+   - Use your Render URL as the base URL
+   - Import the API documentation from `/docs` endpoint
+   - Set up the 5-tier pricing structure
 
-- Pings the `/health` endpoint every 5 minutes
-- Only runs in production (when `RENDER` environment variable is set)
-- Prevents Render free tier from sleeping due to inactivity
-- Includes comprehensive logging for monitoring
+### Alternative: Railway/Fly.io
 
-## License
+The `Procfile` is compatible with Railway and other platforms supporting Python deployments.
 
-This project is ready for commercial use and RapidAPI marketplace deployment.
+## 🔧 Local Development
+
+```bash
+# Install dependencies
+pip install flask flask-cors gunicorn qrcode[pil] pillow reportlab
+
+# Run locally
+python main.py
+
+# Access demo: http://localhost:5000
+# Access docs: http://localhost:5000/docs
+```
+
+## 📊 API Endpoints
+
+- `POST /api/v1/qr/url` - Generate URL QR codes
+- `POST /api/v1/qr/text` - Generate text QR codes  
+- `POST /api/v1/qr/email` - Generate email QR codes
+- `POST /api/v1/qr/phone` - Generate phone QR codes
+- `POST /api/v1/qr/sms` - Generate SMS QR codes
+- `POST /api/v1/qr/vcard` - Generate vCard contact QR codes
+- `POST /api/v1/qr/wifi` - Generate WiFi QR codes
+- `POST /api/v1/qr/location` - Generate location QR codes
+
+## 💼 RapidAPI Integration
+
+All endpoints include RapidAPI-compatible headers and rate limiting information. The API is designed to be immediately compatible with RapidAPI's marketplace requirements.
+
+## 🎨 Demo Interface
+
+Professional demo interface featuring:
+- Interactive QR code generator
+- Real-time preview
+- Customization options
+- Download functionality
+- Responsive design
+- API documentation
+
+## 📈 Competitive Advantages
+
+- **40% cheaper** than similar APIs
+- **500 free requests** vs competitors' 100-200
+- **All QR types included** in every plan
+- **Professional design** and documentation
+- **Multiple output formats**
+- **Advanced customization options**
+
+---
+
+Ready for deployment and RapidAPI monetization! 🚀
