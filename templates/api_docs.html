@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - QR Code Generator</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fas fa-qrcode me-2"></i>QR Code API</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}#demo">Demo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('api_docs') }}">API Docs</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#overview">
+                                <i class="fas fa-info-circle me-2"></i>Overview
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#authentication">
+                                <i class="fas fa-key me-2"></i>Authentication
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#endpoints">
+                                <i class="fas fa-plug me-2"></i>Endpoints
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3" href="#url-endpoint">URL QR Code</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3" href="#text-endpoint">Text QR Code</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3" href="#email-endpoint">Email QR Code</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3" href="#phone-endpoint">Phone QR Code</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3" href="#sms-endpoint">SMS QR Code</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3" href="#vcard-endpoint">vCard QR Code</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3" href="#wifi-endpoint">WiFi QR Code</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ms-3" href="#location-endpoint">Location QR Code</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#customization">
+                                <i class="fas fa-palette me-2"></i>Customization
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#error-handling">
+                                <i class="fas fa-exclamation-triangle me-2"></i>Error Handling
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#examples">
+                                <i class="fas fa-code me-2"></i>Examples
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="py-4">
+                    <!-- Overview -->
+                    <section id="overview" class="mb-5">
+                        <h1 class="mb-4">QR Code Generator API Documentation</h1>
+                        <p class="lead">A comprehensive RESTful API for generating customizable QR codes with support for multiple content types and output formats.</p>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Base URL:</strong> <code>https://your-api-domain.com/api/v1</code>
+                        </div>
+
+                        <h3>Features</h3>
+                        <ul>
+                            <li>Multiple QR code content types (URL, Text, Email, Phone, SMS, vCard, WiFi, Location)</li>
+                            <li>Customizable design options (colors, shapes, error correction)</li>
+                            <li>Multiple output formats (PNG, SVG, PDF)</li>
+                            <li>High resolution support for print quality</li>
+                            <li>Logo embedding support</li>
+                            <li>Base64 encoded responses</li>
+                        </ul>
+                    </section>
+
+                    <!-- Authentication -->
+                    <section id="authentication" class="mb-5">
+                        <h2>Authentication</h2>
+                        <p>This API uses RapidAPI's authentication system. Include your RapidAPI key in the request headers:</p>
+                        
+                        <pre><code class="language-http">X-RapidAPI-Key: YOUR_RAPIDAPI_KEY
+X-RapidAPI-Host: your-api-domain.rapidapi.com
+Content-Type: application/json</code></pre>
+                    </section>
+
+                    <!-- Endpoints -->
+                    <section id="endpoints" class="mb-5">
+                        <h2>API Endpoints</h2>
+                        <p>All endpoints accept POST requests with JSON payloads and return JSON responses with base64 encoded QR code images.</p>
+
+                        <!-- URL Endpoint -->
+                        <div id="url-endpoint" class="endpoint-section">
+                            <h3><span class="badge bg-success">POST</span> /qr/url</h3>
+                            <p>Generate a QR code for a URL or website.</p>
+                            
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+  "url": "https://example.com",
+  "options": {
+    "size": 10,
+    "border": 4,
+    "error_correction": "M",
+    "format": "PNG",
+    "foreground_color": "#000000",
+    "background_color": "#FFFFFF",
+    "module_drawer": "square"
+  }
+}</code></pre>
+
+                            <h4>Response</h4>
+                            <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "content": "https://example.com",
+    "format": "PNG",
+    "qr_code": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
+    "options": {
+      "size": 10,
+      "border": 4,
+      "error_correction": "M",
+      "format": "PNG",
+      "foreground_color": "#000000",
+      "background_color": "#FFFFFF",
+      "module_drawer": "square"
+    }
+  }
+}</code></pre>
+                        </div>
+
+                        <!-- Text Endpoint -->
+                        <div id="text-endpoint" class="endpoint-section">
+                            <h3><span class="badge bg-success">POST</span> /qr/text</h3>
+                            <p>Generate a QR code for plain text content.</p>
+                            
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+  "text": "Hello, World! This is a sample text for QR code generation.",
+  "options": {
+    "size": 12,
+    "error_correction": "Q",
+    "format": "SVG",
+    "foreground_color": "#1a1a1a",
+    "background_color": "#ffffff"
+  }
+}</code></pre>
+                        </div>
+
+                        <!-- Email Endpoint -->
+                        <div id="email-endpoint" class="endpoint-section">
+                            <h3><span class="badge bg-success">POST</span> /qr/email</h3>
+                            <p>Generate a QR code that opens an email client with pre-filled data.</p>
+                            
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+  "email": "contact@example.com",
+  "subject": "Inquiry from QR Code",
+  "message": "Hello, I scanned your QR code and would like more information.",
+  "options": {
+    "size": 10,
+    "format": "PNG"
+  }
+}</code></pre>
+                        </div>
+
+                        <!-- Phone Endpoint -->
+                        <div id="phone-endpoint" class="endpoint-section">
+                            <h3><span class="badge bg-success">POST</span> /qr/phone</h3>
+                            <p>Generate a QR code that initiates a phone call.</p>
+                            
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+  "phone": "+1-555-123-4567",
+  "options": {
+    "size": 10,
+    "format": "PNG",
+    "module_drawer": "rounded"
+  }
+}</code></pre>
+                        </div>
+
+                        <!-- SMS Endpoint -->
+                        <div id="sms-endpoint" class="endpoint-section">
+                            <h3><span class="badge bg-success">POST</span> /qr/sms</h3>
+                            <p>Generate a QR code that opens SMS/text message with pre-filled content.</p>
+                            
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+  "phone": "+1-555-123-4567",
+  "message": "Hello, I got your number from the QR code!",
+  "options": {
+    "size": 10,
+    "format": "PNG"
+  }
+}</code></pre>
+                        </div>
+
+                        <!-- vCard Endpoint -->
+                        <div id="vcard-endpoint" class="endpoint-section">
+                            <h3><span class="badge bg-success">POST</span> /qr/vcard</h3>
+                            <p>Generate a QR code containing contact information in vCard format.</p>
+                            
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+  "first_name": "John",
+  "last_name": "Doe",
+  "organization": "Example Company",
+  "phone_work": "+1-555-123-4567",
+  "phone_mobile": "+1-555-987-6543",
+  "email": "john.doe@example.com",
+  "website": "https://johndoe.com",
+  "street": "123 Main St",
+  "city": "Anytown",
+  "state": "CA",
+  "zipcode": "12345",
+  "country": "USA",
+  "options": {
+    "size": 12,
+    "format": "PNG",
+    "error_correction": "H"
+  }
+}</code></pre>
+                        </div>
+
+                        <!-- WiFi Endpoint -->
+                        <div id="wifi-endpoint" class="endpoint-section">
+                            <h3><span class="badge bg-success">POST</span> /qr/wifi</h3>
+                            <p>Generate a QR code for WiFi network connection.</p>
+                            
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+  "ssid": "MyWiFiNetwork",
+  "password": "mypassword123",
+  "encryption": "WPA",
+  "options": {
+    "size": 10,
+    "format": "PNG",
+    "module_drawer": "circle"
+  }
+}</code></pre>
+                        </div>
+
+                        <!-- Location Endpoint -->
+                        <div id="location-endpoint" class="endpoint-section">
+                            <h3><span class="badge bg-success">POST</span> /qr/location</h3>
+                            <p>Generate a QR code for geographic coordinates that opens in maps application.</p>
+                            
+                            <h4>Request Body</h4>
+                            <pre><code class="language-json">{
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "options": {
+    "size": 10,
+    "format": "PNG"
+  }
+}</code></pre>
+                        </div>
+                    </section>
+
+                    <!-- Customization -->
+                    <section id="customization" class="mb-5">
+                        <h2>Customization Options</h2>
+                        <p>All endpoints support the following customization options in the <code>options</code> object:</p>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Default</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>size</code></td>
+                                        <td>integer</td>
+                                        <td>10</td>
+                                        <td>Size of each QR code module (1-20)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>border</code></td>
+                                        <td>integer</td>
+                                        <td>4</td>
+                                        <td>Border size around QR code (0-10)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>error_correction</code></td>
+                                        <td>string</td>
+                                        <td>"M"</td>
+                                        <td>Error correction level: "L" (7%), "M" (15%), "Q" (25%), "H" (30%)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>format</code></td>
+                                        <td>string</td>
+                                        <td>"PNG"</td>
+                                        <td>Output format: "PNG", "SVG", "PDF"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>foreground_color</code></td>
+                                        <td>string</td>
+                                        <td>"#000000"</td>
+                                        <td>Foreground color (hex format)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>background_color</code></td>
+                                        <td>string</td>
+                                        <td>"#FFFFFF"</td>
+                                        <td>Background color (hex format)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>module_drawer</code></td>
+                                        <td>string</td>
+                                        <td>"square"</td>
+                                        <td>Module shape: "square", "rounded", "circle"</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Error Handling -->
+                    <section id="error-handling" class="mb-5">
+                        <h2>Error Handling</h2>
+                        <p>The API returns appropriate HTTP status codes and error messages:</p>
+                        
+                        <h4>Error Response Format</h4>
+                        <pre><code class="language-json">{
+  "error": "Error description message"
+}</code></pre>
+
+                        <h4>Common Error Codes</h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Status Code</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-danger">400</span></td>
+                                        <td>Bad Request - Missing required fields or invalid parameters</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">401</span></td>
+                                        <td>Unauthorized - Invalid or missing API key</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">404</span></td>
+                                        <td>Not Found - Endpoint does not exist</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning">429</span></td>
+                                        <td>Too Many Requests - Rate limit exceeded</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-danger">500</span></td>
+                                        <td>Internal Server Error - Server-side error</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Examples -->
+                    <section id="examples" class="mb-5">
+                        <h2>Code Examples</h2>
+                        
+                        <h3>JavaScript (Fetch API)</h3>
+                        <pre><code class="language-javascript">const generateQRCode = async (url) => {
+  const response = await fetch('https://your-api-domain.com/api/v1/qr/url', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-RapidAPI-Key': 'YOUR_RAPIDAPI_KEY',
+      'X-RapidAPI-Host': 'your-api-domain.rapidapi.com'
+    },
+    body: JSON.stringify({
+      url: url,
+      options: {
+        size: 12,
+        format: 'PNG',
+        foreground_color: '#1a1a1a',
+        error_correction: 'M'
+      }
+    })
+  });
+
+  const data = await response.json();
+  
+  if (data.success) {
+    // data.data.qr_code contains the base64 encoded image
+    const img = document.createElement('img');
+    img.src = data.data.qr_code;
+    document.body.appendChild(img);
+  } else {
+    console.error('Error generating QR code');
+  }
+};</code></pre>
+
+                        <h3>Python (requests)</h3>
+                        <pre><code class="language-python">import requests
+import base64
+import json
+
+def generate_qr_code(text):
+    url = "https://your-api-domain.com/api/v1/qr/text"
+    
+    headers = {
+        "Content-Type": "application/json",
+        "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY",
+        "X-RapidAPI-Host": "your-api-domain.rapidapi.com"
+    }
+    
+    payload = {
+        "text": text,
+        "options": {
+            "size": 10,
+            "format": "PNG",
+            "error_correction": "M",
+            "module_drawer": "rounded"
+        }
+    }
+    
+    response = requests.post(url, json=payload, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        if data["success"]:
+            # Extract base64 image data
+            qr_code_data = data["data"]["qr_code"]
+            
+            # Save to file
+            with open("qr_code.png", "wb") as f:
+                # Remove data URL prefix
+                base64_data = qr_code_data.split(",")[1]
+                f.write(base64.b64decode(base64_data))
+                
+            print("QR code saved as qr_code.png")
+        else:
+            print("Error generating QR code")
+    else:
+        print(f"API request failed with status {response.status_code}")
+
+# Usage
+generate_qr_code("Hello, World!")</code></pre>
+
+                        <h3>cURL</h3>
+                        <pre><code class="language-bash">curl -X POST "https://your-api-domain.com/api/v1/qr/url" \
+     -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Key: YOUR_RAPIDAPI_KEY" \
+     -H "X-RapidAPI-Host: your-api-domain.rapidapi.com" \
+     -d '{
+       "url": "https://example.com",
+       "options": {
+         "size": 10,
+         "format": "PNG",
+         "error_correction": "M",
+         "foreground_color": "#000000",
+         "background_color": "#FFFFFF"
+       }
+     }'</code></pre>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Smooth scrolling for sidebar -->
+    <script>
+        document.querySelectorAll('#sidebar a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Update active nav item on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('#sidebar a');
+            
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
